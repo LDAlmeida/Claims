@@ -12,11 +12,17 @@ class DamagePhotoInline(admin.StackedInline):
 class DamageAdmin(admin.ModelAdmin):
     model = Damage
     inlines = [DamagePhotoInline]
+    list_display = ["vehicle", "reservation_number","guest", "description","date"]
+    search_fields = ["vehicle", "reservation_number","guest", "description"]
+    list_filter = ["vehicle"]
     
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     model= Claim
-
+    list_display = ["damage", "status", "claim_number","insurance_company"]
+    search_fields = ["damage", "status", "claim_number","insurance_company"]
+    list_filter = ["status", "insurance_company"]
+    
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
     model = Guest
