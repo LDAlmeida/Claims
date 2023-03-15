@@ -149,10 +149,10 @@ class Claim(models.Model):
 	insurance_company = models.ForeignKey(InsuranceCompany, verbose_name="Insurance Company", on_delete=models.CASCADE)
 	adjuster = models.ForeignKey(Adjuster, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
 	estimate_made = models.BooleanField()
-	estimate_file = models.FileField(upload_to="Estimates/")
+	estimate_file = models.FileField(blank = True, upload_to="Estimates/")
 	auto_shop = models.ForeignKey(AutoShop, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
 	demand_made = models.BooleanField()
-	demand_file = models.FileField(upload_to="DemandLetters/")
+	demand_file = models.FileField(blank = True, upload_to="DemandLetters/")
 	demand_intake = models.CharField(max_length=10)
 	
  
