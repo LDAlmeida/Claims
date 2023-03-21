@@ -144,7 +144,7 @@ class Claim(models.Model):
 	
 	status = models.CharField(choices=Status.choices, max_length=200)
 	damage = models.ForeignKey(Damage, verbose_name= "Damage", on_delete=models.CASCADE)
-	rental_agreement = models.FileField(upload_to="RentalAgreements/")
+	rental_agreement = models.FileField(null = True, upload_to="RentalAgreements/")
 	claim_number = models.CharField(max_length=50)
 	insurance_company = models.ForeignKey(InsuranceCompany, verbose_name="Insurance Company", on_delete=models.CASCADE)
 	adjuster = models.ForeignKey(Adjuster, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
@@ -154,7 +154,8 @@ class Claim(models.Model):
 	demand_made = models.BooleanField()
 	demand_file = models.FileField(blank = True, upload_to="DemandLetters/")
 	demand_intake = models.CharField(max_length=10)
-	
+	observation = models.TextField(
+	blank=True, null=True, max_length=1024, help_text="Observations and notes about the claim")
  
 	class Meta:
 		verbose_name = "Claim"
