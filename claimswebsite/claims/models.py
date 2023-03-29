@@ -8,14 +8,16 @@ class Vehicle(models.Model):
 	make = models.CharField(blank=False, max_length=30)
 	model = models.CharField(blank=False, max_length=30)
 	year = models.CharField(blank=False, max_length=4)
-	turo_link = models.CharField(blank=False, max_length=100)
+	plate_number = models.CharField(blank = True, max_length=10)
+	color = models.CharField(blank= True, max_length=20)
+	turo_link = models.CharField(blank=True, max_length=100)
 
 	class Meta:
 		verbose_name = "Vehicle"
 		verbose_name_plural = "Vehicles"
 
 	def __str__(self):
-		return self.make + self.model + self.year
+		return f'{self.make} {self.model} {self.year}'
 
 	def get_absolute_url(self):
 		return reverse("vehicle_detail", kwargs={"pk": self.pk})
@@ -26,9 +28,9 @@ class Guest(models.Model):
 	full_name = models.CharField(blank=False, max_length=100)
 	phone_number = models.CharField(blank=False, max_length=50)
 	drivers_license = models.FileField(
-		blank=False, upload_to="GuestPhotos/DL/")
+		blank=False, upload_to="Claims/media/GuestPhotos/DL/")
 	insurance = models.FileField(
-		blank=False, upload_to="GuestPhotos/Insurance/")
+		blank=False, upload_to="Claims/media/GuestPhotos/Insurance/")
 
 	class Meta:
 		verbose_name = "Guest"
@@ -43,7 +45,7 @@ class Guest(models.Model):
 
 class InsuranceCompany(models.Model):
 	name = models.CharField(blank=False, max_length=50)
-	phone_number = models.CharField(blank=False, max_length=50)
+	phone_number = models.CharField(blank=True, max_length=50)
 
 	class Meta:
 		verbose_name = "Insurance company"
@@ -77,7 +79,7 @@ class Adjuster(models.Model):
 class AutoShop(models.Model):
 
 	name = models.CharField(blank=False, max_length=100)
-	phone_number = models.CharField(blank=False, max_length=50)
+	phone_number = models.CharField(blank=True, max_length=50)
 
 	class Meta:
 		verbose_name = "Auto shop"
@@ -106,7 +108,7 @@ class Damage(models.Model):
 		verbose_name_plural = "Damages"
 
 	def __str__(self):
-		return self.vehicle.model + "Damage" + self.guest.full_name
+		return f'{self.vehicle.model} Damage - {self.guest.full_name}'
 
 	def get_absolute_url(self):
 		return reverse("damage_detail", kwargs={"pk": self.pk})
@@ -117,13 +119,13 @@ class DamagePhoto(models.Model):
 		BEFORE = 'Before'
 		AFTER = 'After'
 	
-	photo = models.FileField(upload_to="DamagePhotos/")
+	photo = models.FileField(upload_to="Claims/media/DamagePhotos/")
 	damage = models.ForeignKey(
 		Damage, on_delete=models.CASCADE, related_name='Photos')
 	before_or_after = models.CharField(choices=BeforeOrAfter.choices, max_length=20)
 
 	def __str__(self):
-		return self.damage.vehicle.model + self.before_or_after + self.damage.guest.full_name
+		return f'{self.damage.guest.full_name} - {self.damage.vehicle.model}'
 
 	class Meta:
 		verbose_name = "Damage photo"
@@ -144,16 +146,16 @@ class Claim(models.Model):
 	
 	status = models.CharField(choices=Status.choices, max_length=200)
 	damage = models.ForeignKey(Damage, verbose_name= "Damage", on_delete=models.CASCADE)
-	rental_agreement = models.FileField(null = True, upload_to="RentalAgreements/")
+	rental_agreement = models.FileField(null = True, upload_to="Claims/media/RentalAgreements/")
 	claim_number = models.CharField(max_length=50)
-	insurance_company = models.ForeignKey(InsuranceCompany, verbose_name="Insurance Company", on_delete=models.CASCADE)
-	adjuster = models.ForeignKey(Adjuster, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
+	insurance_company = models.ForeignKey(InsuranceCompany, blank = True, verbose_name="Insurance Company", on_delete=models.CASCADE)
+	adjuster = models.ForeignKey(Adjuster, blank= True, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
 	estimate_made = models.BooleanField()
-	estimate_file = models.FileField(blank = True, upload_to="Estimates/")
-	auto_shop = models.ForeignKey(AutoShop, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
+	estimate_file = models.FileField(blank = True, upload_to="Claims/media/Estimates/")
+	auto_shop = models.ForeignKey(AutoShop, blank= True, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
 	demand_made = models.BooleanField()
-	demand_file = models.FileField(blank = True, upload_to="DemandLetters/")
-	demand_intake = models.CharField(max_length=10)
+	demand_file = models.FileField(blank = True, upload_to="Claims/media/DemandLetters/")
+	demand_intake = models.CharField(blank = True, max_length=10)
 	observation = models.TextField(
 	blank=True, null=True, max_length=1024, help_text="Observations and notes about the claim")
  
