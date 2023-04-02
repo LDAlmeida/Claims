@@ -12,9 +12,14 @@ class DamagePhotoInline(admin.StackedInline):
 class DamageAdmin(admin.ModelAdmin):
     model = Damage
     inlines = [DamagePhotoInline]
-    list_display = ["vehicle", "reservation_number","guest", "description","date"]
+    list_display = ["vehicle", "reservation_number","guest", "description","date", "is_referenced"]
     search_fields = ["vehicle", "reservation_number","guest", "description"]
     list_filter = ["vehicle"]
+    
+    def is_referenced(self, obj):
+        return Claim.objects.filter(damage_id=obj.id).exists()
+    is_referenced.boolean = True
+    is_referenced.short_description = 'Referenced by Claim'
     
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
