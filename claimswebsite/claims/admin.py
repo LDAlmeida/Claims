@@ -27,6 +27,7 @@ class ClaimAdmin(admin.ModelAdmin):
     list_display = ["damage", "status", "claim_number","insurance_company"]
     search_fields = ["damage", "status", "claim_number","insurance_company"]
     list_filter = ["status", "insurance_company"]
+    readonly_fields = ["estimate_made", "demand_made"]
     
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
