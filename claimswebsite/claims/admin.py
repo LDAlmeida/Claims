@@ -48,9 +48,9 @@ class InsuranceCompanyAdmin(admin.ModelAdmin):
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     model = Vehicle
-    list_display = ["make", "model", "year","plate", "color", "turo_link"]
-    search_fields = ["make", "model", "year","plate", "color", "turo_link"]
-    list_filter = ["make", "model", "year","plate", "color", "turo_link"]
+    list_display = ["make", "model", "year","plate_number", "color", "turo_link"]
+    search_fields = ["make", "model", "year","plate_number", "color", "turo_link"]
+    list_filter = ["make", "model", "year","plate_number", "color", "turo_link"]
     
 
 
