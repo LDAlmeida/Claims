@@ -17,7 +17,7 @@ class Vehicle(models.Model):
 		verbose_name_plural = "Vehicles"
 
 	def __str__(self):
-		return f'{self.make} {self.model} {self.year}'
+		return f'{self.model} {self.color} {self.plate_number}'
 
 	def get_absolute_url(self):
 		return reverse("vehicle_detail", kwargs={"pk": self.pk})
