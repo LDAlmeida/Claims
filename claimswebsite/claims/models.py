@@ -146,15 +146,15 @@ class Claim(models.Model):
 	
 	status = models.CharField(choices=Status.choices, max_length=200)
 	damage = models.ForeignKey(Damage, verbose_name= "Damage", on_delete=models.CASCADE)
-	rental_agreement = models.FileField(null = True, upload_to="Claims/media/RentalAgreements/")
+	rental_agreement = models.FileField(blank = True, null = True, upload_to="Claims/media/RentalAgreements/")
 	claim_number = models.CharField(max_length=50)
 	insurance_company = models.ForeignKey(InsuranceCompany, null= True, verbose_name="Insurance Company", on_delete=models.CASCADE)
 	adjuster = models.ForeignKey(Adjuster, null= True, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
 	estimate_made = models.BooleanField()
-	estimate_file = models.FileField(null = True, upload_to="Claims/media/Estimates/")
+	estimate_file = models.FileField(blank = True, null = True, upload_to="Claims/media/Estimates/")
 	auto_shop = models.ForeignKey(AutoShop, null= True, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
 	demand_made = models.BooleanField()
-	demand_file = models.FileField(null = True, upload_to="Claims/media/DemandLetters/")
+	demand_file = models.FileField(blank = True, null = True, upload_to="Claims/media/DemandLetters/")
 	demand_intake = models.CharField(null = True, max_length=10)
 	observation = models.TextField(
 	blank=True, null=True, max_length=1024, help_text="Observations and notes about the claim")
