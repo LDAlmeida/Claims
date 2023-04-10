@@ -148,14 +148,14 @@ class Claim(models.Model):
 	damage = models.ForeignKey(Damage, verbose_name= "Damage", on_delete=models.CASCADE)
 	rental_agreement = models.FileField(null = True, upload_to="Claims/media/RentalAgreements/")
 	claim_number = models.CharField(max_length=50)
-	insurance_company = models.ForeignKey(InsuranceCompany, blank = True, verbose_name="Insurance Company", on_delete=models.CASCADE)
-	adjuster = models.ForeignKey(Adjuster, blank= True, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
+	insurance_company = models.ForeignKey(InsuranceCompany, null= True, verbose_name="Insurance Company", on_delete=models.CASCADE)
+	adjuster = models.ForeignKey(Adjuster, null= True, verbose_name="Name of the adjuster", on_delete=models.CASCADE)
 	estimate_made = models.BooleanField()
-	estimate_file = models.FileField(blank = True, upload_to="Claims/media/Estimates/")
-	auto_shop = models.ForeignKey(AutoShop, blank= True, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
+	estimate_file = models.FileField(null = True, upload_to="Claims/media/Estimates/")
+	auto_shop = models.ForeignKey(AutoShop, null= True, verbose_name="Auto/Body shop", on_delete=models.CASCADE)
 	demand_made = models.BooleanField()
-	demand_file = models.FileField(blank = True, upload_to="Claims/media/DemandLetters/")
-	demand_intake = models.CharField(blank = True, max_length=10)
+	demand_file = models.FileField(null = True, upload_to="Claims/media/DemandLetters/")
+	demand_intake = models.CharField(null = True, max_length=10)
 	observation = models.TextField(
 	blank=True, null=True, max_length=1024, help_text="Observations and notes about the claim")
  
@@ -171,3 +171,12 @@ class Claim(models.Model):
 
 	def get_absolute_url(self):
 		return reverse("claim_detail", kwargs={"pk": self.pk})
+
+	def save(self, *args, **kwargs):
+		if self.estimate_file:
+			self.estimate_made = True
+   
+		if self.demand_file:
+			self.demand_made = True
+		
+		super(Claim, self).save(*args, **kwargs)
