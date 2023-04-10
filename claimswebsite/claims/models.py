@@ -138,6 +138,7 @@ class Claim(models.Model):
 		ESTIMATE_READY = "Estimate ready"
 		ESTIMATE_SENT = "Estimate sent to insurance company"
 		DENIED = "Denied"
+		DEMAND_READY = "Demand letter ready"
 		DEMAND_SENT = "Demand letter sent"
 		WAITING_PAYMENT = "Waiting on payment from insurance company/Guest"
 		PAID = "Paid"
@@ -175,8 +176,14 @@ class Claim(models.Model):
 	def save(self, *args, **kwargs):
 		if self.estimate_file:
 			self.estimate_made = True
+			self.status = self.Status.ESTIMATE_READY
+		else:
+			self.estimate_made = False
    
 		if self.demand_file:
 			self.demand_made = True
-		
+			self.status = self.Status.DEMAND_SENT
+		else:
+			self.demand_made = False
+   
 		super(Claim, self).save(*args, **kwargs)
