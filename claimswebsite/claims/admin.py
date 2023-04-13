@@ -24,10 +24,15 @@ class DamageAdmin(admin.ModelAdmin):
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     model= Claim
-    list_display = ["damage", "status", "estimate_made", "demand_made", "claim_number","insurance_company", "damage__date"]
+    list_display = ["damage", "status", "estimate_made", "demand_made", "claim_number","insurance_company", "get_date"]
     search_fields = ["damage", "status", "claim_number","insurance_company"]
     list_filter = ["status", "insurance_company"]
     readonly_fields = ["estimate_made", "demand_made"]
+    
+    def get_date(self, obj):
+        return obj.damage.date
+    get_date.admin_order_field  = 'data'  #Allows column order sorting
+    get_date.short_description = 'Data of damage/loss'  #Renames column head
     
 @admin.register(Guest)
 class GuestAdmin(admin.ModelAdmin):
