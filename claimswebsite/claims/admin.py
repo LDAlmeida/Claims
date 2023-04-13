@@ -24,7 +24,7 @@ class DamageAdmin(admin.ModelAdmin):
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     model= Claim
-    list_display = ["damage", "status", "estimate_made", "demand_made", "claim_number","insurance_company"]
+    list_display = ["damage", "status", "estimate_made", "demand_made", "claim_number","insurance_company", "damage__date"]
     search_fields = ["damage", "status", "claim_number","insurance_company"]
     list_filter = ["status", "insurance_company"]
     readonly_fields = ["estimate_made", "demand_made"]
