@@ -175,8 +175,12 @@ class Claim(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.estimate_file:
+			# Check if an estimate already exists
+			existing_estimate = self.__class__.objects.filter(pk=self.pk, estimate_file__isnull=False).exists()
+			if not existing_estimate:
+				# Set the status field to "estimate uploaded" if this is the first time an estimate is being uploaded
+				self.status = self.Status.ESTIMATE_READY
 			self.estimate_made = True
-			self.status = self.Status.ESTIMATE_READY
 		else:
 			self.estimate_made = False
    
