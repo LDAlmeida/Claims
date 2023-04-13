@@ -31,7 +31,7 @@ class ClaimAdmin(admin.ModelAdmin):
     
     def get_date(self, obj):
         return obj.damage.date
-    get_date.admin_order_field  = 'data'  #Allows column order sorting
+    get_date.admin_order_field  = 'damage.date'  #Allows column order sorting
     get_date.short_description = 'Data of damage/loss'  #Renames column head
     
 @admin.register(Guest)
